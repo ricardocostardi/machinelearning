@@ -6,6 +6,7 @@ from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 from matplotlib import style
 import datetime
+import pickle
 
 style.use('ggplot')
 
@@ -32,6 +33,11 @@ y = np.array(df['label'])
 X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, y, test_size=0.2)
 clf = LinearRegression(n_jobs=-1)
 clf.fit(X_train, y_train)
+#salvando o modelo treinado
+with open('linearregresion.pickle', 'wb') as f:
+	pickle.dump(clf, f)
+pickle_in = open('linearregresion.pickle', 'rb')
+clf = pickle.load(pickle_in)	
 confidence = clf.score(X_test, y_test)
 
 forecast_set = clf.predict(X_lately)
